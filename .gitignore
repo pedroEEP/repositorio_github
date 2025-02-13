@@ -1,0 +1,6 @@
+# Archivos Python a ignorar
+__pycache__/
+*.pyc
+*.pyo
+*.env
+*.venv
