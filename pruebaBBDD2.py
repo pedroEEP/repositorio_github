@@ -26,6 +26,37 @@ def insertar():
     miconexion.commit()
     miconexion.close()
     messagebox.showinfo("BBDD","Registro insertado con éxito")
+
+def actualizar():
+    miconexion=sqlite3.connect("BBDD10")
+    micursor=miconexion.cursor()
+    micursor.execute("""UPDATE alumnos SET
+                     usuario=?,
+                     passwd=?
+                     where id=?""",
+                     (contenido_nombre.get(),
+                      contenido_passwd.get(),
+                      contenido_id.get()))    
+    miconexion.commit()
+    miconexion.close()
+    messagebox.showinfo("BBDD","El registro se actualizo correctamente")
+
+def leer():
+    miconexion=sqlite3.connect("BBDD10")
+    micursor=miconexion.cursor()
+    micursor.execute("""SELECT * FROM alumnos
+                     where id=?""",
+                     (contenido_id.get()))
+    resultado=micursor.fetchall()
+    for i in resultado:
+        contenido_id.set(i[0])
+        contenido_nombre.set(i[1])
+        contenido_passwd.set(i[2])
+    #miconexion.commit()
+    miconexion.close()
+    
+
+    
 root=Tk()
 
 #variables
@@ -59,6 +90,13 @@ boton_crear.grid(row=3,column=0,padx=10,pady=10)
 
 boton_insertar=Button(mi_frame,text="Insertar BBDD", command=insertar)
 boton_insertar.grid(row=3,column=1,padx=10,pady=10)
+
+boton_actualizar=Button(mi_frame,text="Actualizar BBDD", command=actualizar)
+boton_actualizar.grid(row=4,column=0,padx=10,pady=10)
+
+boton_leer=Button(mi_frame,text="Leer BBDD", command=leer)
+boton_leer.grid(row=4,column=1,padx=10,pady=10)
+
 
 
 root.mainloop()
