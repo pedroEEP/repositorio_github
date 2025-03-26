@@ -55,7 +55,21 @@ def leer():
     #miconexion.commit()
     miconexion.close()
     
-
+def eliminar_contenido_entry():
+    contenido_id.set("")
+    contenido_nombre.set("")
+    contenido_passwd.set("")
+    
+def borrar():
+    miconexion=sqlite3.connect("BBDD10")
+    micursor=miconexion.cursor()
+    micursor.execute("""DELETE FROM alumnos  
+                     where id=?      
+                     """,
+                     (contenido_id.get()))
+    miconexion.commit()
+    miconexion.close()
+    messagebox.showinfo("BBDD","Registro borrado con éxito")
     
 root=Tk()
 
@@ -97,6 +111,11 @@ boton_actualizar.grid(row=4,column=0,padx=10,pady=10)
 boton_leer=Button(mi_frame,text="Leer BBDD", command=leer)
 boton_leer.grid(row=4,column=1,padx=10,pady=10)
 
+boton_eliminar_contenido=Button(mi_frame,text="Borrar datos", command=eliminar_contenido_entry)
+boton_eliminar_contenido.grid(row=5,column=0,padx=10,pady=10)
+
+boton_borrar_BBDD=Button(mi_frame,text="Borrar BBDD", command=borrar)
+boton_borrar_BBDD.grid(row=5,column=1,padx=10,pady=10)
 
 
 root.mainloop()
