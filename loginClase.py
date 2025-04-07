@@ -3,12 +3,22 @@ from tkinter import messagebox
 import sqlite3
 import hashlib
 import os
+import sys
+
+# PyInstaller usa esta función para localizar los recursos
+def recurso_path(rel_path):
+    try:
+        base_path = sys._MEIPASS  # Carpeta temporal del .exe
+    except AttributeError:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, rel_path)
 
 def encriptar_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 def logearse():
-    mi_conexion = sqlite3.connect("BBDD11")
+    mi_conexion = sqlite3.connect(recurso_path("BBDD11"))
+    #mi_conexion = sqlite3.connect("BBDD11")
     mi_cursor=mi_conexion.cursor()
     mi_cursor.execute("""SELECT * FROM alumnos
                       WHERE usuario=? AND passwd=?""",
@@ -21,7 +31,9 @@ def logearse():
         #os.system("python sumaClase.py")  
         #os.startfile("Practica.pdf")
         #os.startfile("C:\\Users\\pemil\\Desktop\\BrowserSqlite.msi")
-        os.startfile("sumaClase.exe")
+        #os.startfile("sumaClase.exe")
+        os.startfile(recurso_path("sumaClase.exe"))
+
     mi_conexion.close()
 
 root=Tk()
